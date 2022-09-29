@@ -1,0 +1,9 @@
+# gcc manpages are non-free
+gnat-mingw-w64-i686-posix: no-manual-page
+
+# These aren't spelling errors
+gnat-mingw-w64-i686-posix: spelling-error-in-binary usr/bin/i686-w64-mingw32-gnatlink-* nam name
+gnat-mingw-w64-i686-posix: spelling-error-in-binary usr/lib/gcc/i686-w64-mingw32/*/gnat1 Nam Name
+
+# PIE causes issues with pre-compiled headers
+gnat-mingw-w64-i686-posix: hardening-no-pie

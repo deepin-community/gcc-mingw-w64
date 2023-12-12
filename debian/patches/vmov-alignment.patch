@@ -4,9 +4,11 @@ Bug-Debian: https://bugs.debian.org/939559
 
 Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
 
---- a/src/gcc/config/i386/sse.md
-+++ b/src/gcc/config/i386/sse.md
-@@ -1058,17 +1058,11 @@
+Index: gcc-mingw-w64/src/gcc/config/i386/sse.md
+===================================================================
+--- gcc-mingw-w64.orig/src/gcc/config/i386/sse.md	2023-09-22 17:31:36.374270043 +0200
++++ gcc-mingw-w64/src/gcc/config/i386/sse.md	2023-09-22 17:31:36.366269859 +0200
+@@ -1419,17 +1419,11 @@
  {
    if (FLOAT_MODE_P (GET_MODE_INNER (<MODE>mode)))
      {
@@ -26,7 +28,7 @@ Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
      }
  }
    [(set_attr "type" "ssemov")
-@@ -1184,17 +1178,11 @@
+@@ -1620,17 +1614,11 @@
  {
    if (FLOAT_MODE_P (GET_MODE_INNER (<MODE>mode)))
      {
@@ -46,7 +48,7 @@ Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
      }
  }
    [(set_attr "type" "ssemov")
-@@ -7806,7 +7794,7 @@
+@@ -10448,7 +10436,7 @@
    "TARGET_SSE && !(MEM_P (operands[0]) && MEM_P (operands[1]))"
    "@
     %vmovlps\t{%1, %0|%q0, %1}
@@ -55,7 +57,7 @@ Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
     %vmovlps\t{%1, %d0|%d0, %q1}"
    [(set_attr "type" "ssemov")
     (set_attr "prefix" "maybe_vex")
-@@ -13997,29 +13985,15 @@
+@@ -18256,29 +18244,15 @@
    switch (<MODE>mode)
      {
      case E_V8DFmode:
@@ -89,7 +91,7 @@ Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
      default:
        gcc_unreachable ();
      }
-@@ -21225,63 +21199,27 @@
+@@ -26800,63 +26774,27 @@
        switch (get_attr_mode (insn))
  	{
  	case MODE_V16SF:
@@ -167,14 +169,21 @@ Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
  	default:
  	  gcc_unreachable ();
  	}
---- a/src/gcc/config/i386/i386.c
-+++ b/src/gcc/config/i386/i386.c
-@@ -4981,13 +4981,13 @@
-       switch (type)
+Index: gcc-mingw-w64/src/gcc/config/i386/i386.cc
+===================================================================
+--- gcc-mingw-w64.orig/src/gcc/config/i386/i386.cc	2023-09-22 17:31:36.374270043 +0200
++++ gcc-mingw-w64/src/gcc/config/i386/i386.cc	2023-09-22 17:33:09.600426632 +0200
+@@ -5475,17 +5475,15 @@
  	{
  	case opcode_int:
--	  opcode = misaligned_p ? "vmovdqu32" : "vmovdqa32";
-+	  opcode = "vmovdqu32";
+ 	  if (scalar_mode == E_HFmode || scalar_mode == E_BFmode)
+-	    opcode = (misaligned_p
+-		      ? (TARGET_AVX512BW ? "vmovdqu16" : "vmovdqu64")
+-		      : "vmovdqa64");
++	    opcode = TARGET_AVX512BW ? "vmovdqu16" : "vmovdqu64";
+ 	  else
+-	    opcode = misaligned_p ? "vmovdqu32" : "vmovdqa32";
++	    opcode = "vmovdqu32";
  	  break;
  	case opcode_float:
 -	  opcode = misaligned_p ? "vmovups" : "vmovaps";
@@ -186,9 +195,26 @@ Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
  	  break;
  	}
      }
-@@ -4996,16 +4996,16 @@
-       switch (scalar_mode)
- 	{
+@@ -5496,29 +5494,25 @@
+ 	case E_HFmode:
+ 	case E_BFmode:
+ 	  if (evex_reg_p)
+-	    opcode = (misaligned_p
+-		      ? (TARGET_AVX512BW
++	    opcode = TARGET_AVX512BW
+ 			 ? "vmovdqu16"
+-			 : "vmovdqu64")
+-		      : "vmovdqa64");
++			 : "vmovdqu64";
+ 	  else
+-	    opcode = (misaligned_p
+-		      ? (TARGET_AVX512BW
++	    opcode = TARGET_AVX512BW
+ 			 ? "vmovdqu16"
+-			 : "%vmovdqu")
+-		      : "%vmovdqa");
++			 : "%vmovdqu";
+ 	  break;
  	case E_SFmode:
 -	  opcode = misaligned_p ? "%vmovups" : "%vmovaps";
 +	  opcode = "%vmovups";
@@ -207,7 +233,7 @@ Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
  	  break;
  	default:
  	  gcc_unreachable ();
-@@ -5017,48 +5017,32 @@
+@@ -5530,48 +5524,32 @@
  	{
  	case E_QImode:
  	  if (evex_reg_p)
@@ -216,13 +242,14 @@ Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
 -			 ? "vmovdqu8"
 -			 : "vmovdqu64")
 -		      : "vmovdqa64");
-+	    opcode = TARGET_AVX512BW ? "vmovdqu8" : "vmovdqu64";
- 	  else
+-	  else
 -	    opcode = (misaligned_p
 -		      ? (TARGET_AVX512BW
 -			 ? "vmovdqu8"
 -			 : "%vmovdqu")
 -		      : "%vmovdqa");
++	    opcode = TARGET_AVX512BW ? "vmovdqu8" : "vmovdqu64";
++	  else
 +	    opcode = TARGET_AVX512BW ? "vmovdqu8" : "%vmovdqu";
  	  break;
  	case E_HImode:

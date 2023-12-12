@@ -1,2 +1,3 @@
 reproducible-s-oscons.patch
 vmov-alignment.patch
+vsnprintf-str.patch

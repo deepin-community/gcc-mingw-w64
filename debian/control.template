@@ -4,7 +4,6 @@ Depends: @@PACKAGE@@-mingw-w64-i686,
          @@PACKAGE@@-mingw-w64-x86-64,
          ${misc:Depends}
 Recommends: @@RECOMMENDS@@
-Built-Using: gcc-@@VERSION@@ (= ${gcc:Version})
 Description: GNU @@LANGUAGE@@ compiler for MinGW-w64
  MinGW-w64 provides a development and runtime environment for 32- and
  64-bit (x86 and x64) Windows applications using the Windows API and
@@ -19,7 +18,6 @@ Architecture: all
 Depends: @@PACKAGE@@-mingw-w64-i686-posix,
          @@PACKAGE@@-mingw-w64-i686-win32,
          ${misc:Depends}
-Built-Using: gcc-@@VERSION@@ (= ${gcc:Version})
 Description: GNU @@LANGUAGE@@ compiler for MinGW-w64 targeting Win32
  MinGW-w64 provides a development and runtime environment for 32- and
  64-bit (x86 and x64) Windows applications using the Windows API and
@@ -74,7 +72,6 @@ Architecture: all
 Depends: @@PACKAGE@@-mingw-w64-x86-64-posix,
          @@PACKAGE@@-mingw-w64-x86-64-win32,
          ${misc:Depends}
-Built-Using: gcc-@@VERSION@@ (= ${gcc:Version})
 Description: GNU @@LANGUAGE@@ compiler for MinGW-w64 targeting Win64
  MinGW-w64 provides a development and runtime environment for 32- and
  64-bit (x86 and x64) Windows applications using the Windows API and

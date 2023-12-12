@@ -1,2 +1,0 @@
-# We use patch/series in an unorthodox manner
-gcc-mingw-w64 source: patch-file-present-but-not-mentioned-in-series

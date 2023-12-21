@@ -25,6 +25,7 @@ case "$1" in
          --slave /usr/bin/i686-w64-mingw32-gnatchop i686-w64-mingw32-gnatchop /usr/bin/i686-w64-mingw32-gnatchop-posix \
          --slave /usr/bin/i686-w64-mingw32-gnatclean i686-w64-mingw32-gnatclean /usr/bin/i686-w64-mingw32-gnatclean-posix \
          --slave /usr/bin/i686-w64-mingw32-gnatfind i686-w64-mingw32-gnatfind /usr/bin/i686-w64-mingw32-gnatfind-posix \
+         --slave /usr/bin/i686-w64-mingw32-gnatgcc i686-w64-mingw32-gnatgcc /usr/bin/i686-w64-mingw32-gcc-posix \
          --slave /usr/bin/i686-w64-mingw32-gnatkr i686-w64-mingw32-gnatkr /usr/bin/i686-w64-mingw32-gnatkr-posix \
          --slave /usr/bin/i686-w64-mingw32-gnatlink i686-w64-mingw32-gnatlink /usr/bin/i686-w64-mingw32-gnatlink-posix \
          --slave /usr/bin/i686-w64-mingw32-gnatls i686-w64-mingw32-gnatls /usr/bin/i686-w64-mingw32-gnatls-posix \

@@ -1,5 +1,6 @@
 Package: gcc-mingw-w64-base
 Architecture: any
+Multi-Arch: same
 Depends: ${misc:Depends}
 Built-Using: gcc-@@VERSION@@ (= ${gcc:Version})
 Description: GNU Compiler Collection for MinGW-w64 (base package)

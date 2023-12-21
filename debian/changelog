@@ -1,3 +1,86 @@
+gcc-mingw-w64 (26.1) unstable; urgency=medium
+
+  * Add missing find arguments...
+
+ -- Stephen Kitt <skitt@debian.org>  Sun, 24 Sep 2023 20:34:25 +0200
+
+gcc-mingw-w64 (26) unstable; urgency=medium
+
+  * Switch to GCC 13.
+  * Drop breaks/conflicts for old package splits, the affected versions
+    are all obsolete.
+  * Use find -exec instead of piping find’s output into xargs.
+
+ -- Stephen Kitt <skitt@debian.org>  Sat, 23 Sep 2023 18:22:52 +0200
+
+gcc-mingw-w64 (25.3) unstable; urgency=medium
+
+  * Stop setting the build timestamp manually, ld takes care of that
+    itself now. Closes: #1052220.
+
+ -- Stephen Kitt <skitt@debian.org>  Thu, 21 Sep 2023 07:23:25 +0200
+
+gcc-mingw-w64 (25.2) unstable; urgency=medium
+
+  [ Konstantin Demin ]
+  * Restore the ability to parallel-install POSIX and Win32 thread
+    variants.
+  * Install g++-mapper-server in the g++ packages.
+
+  [ Stephen Kitt ]
+  * Standards-Version 4.6.2, no change required.
+
+ -- Stephen Kitt <skitt@debian.org>  Tue, 10 Jan 2023 17:40:24 +0100
+
+gcc-mingw-w64 (25.1) unstable; urgency=medium
+
+  * Correctly remove the g++-mingw-w64-x86-64-win32 alternative. Closes:
+    #1026306.
+  * Update Lintian overrides to the new format.
+
+ -- Stephen Kitt <skitt@debian.org>  Sun, 18 Dec 2022 22:03:42 +0100
+
+gcc-mingw-w64 (25) unstable; urgency=medium
+
+  * Upgrade to GCC 12. Closes: #1023679. It is no longer possible to tweak
+    the installation directory for different thread models, so the -posix
+    and -win32 packages are no longer co-installable.
+  * Drop “Built-Using” from “Architecture: all” packages.
+  * Since the POSIX and Win32 packages are no longer co-installable,
+    drop support for alternatives and use symlinks to provide the full
+    set of command names.
+  * Standards-Version 4.6.1, no change required.
+
+ -- Stephen Kitt <skitt@debian.org>  Mon, 12 Dec 2022 09:00:34 +0100
+
+gcc-mingw-w64 (24.4) unstable; urgency=medium
+
+  * Fix building without vsnprintf. Closes: #1009481.
+
+ -- Stephen Kitt <skitt@debian.org>  Fri, 15 Apr 2022 12:34:36 +0200
+
+gcc-mingw-w64 (24.3) unstable; urgency=medium
+
+  * Add gnatgcc links, attached to the gnat links; this allows gprbuild to
+    find the appropriate gcc. Closes: #932969.
+  * Drop the asterisk from NEWS, to follow best practices as documented
+    in <https://www.debian.org/doc/manuals/developers-reference/best-
+    pkging-practices.html#supplementing-changelogs-with-news-debian-
+    files>.
+  * Make 4.3 broke the space construction in debian/rules, use a space
+    directly instead.
+  * Mark gcc-mingw-w64-base as “Multi-Arch: same”. Closes: #986615.
+  * Enforce the use of /bin/sed to ensure reproducibility across
+    usrmerge; thanks to Vagrant Cascadian for the patch. Closes:
+    #991020.
+  * Drop the obsolete patch-file-present-but-not-mentioned-in-series
+    Lintian override.
+  * Override the non-standard-file-perm Lintian warning for ALI files.
+  * Fix the spelling of “shouldn’t”.
+  * Standards-Version 4.6.0, no change required.
+
+ -- Stephen Kitt <skitt@debian.org>  Fri, 11 Feb 2022 17:25:46 +0100
+
 gcc-mingw-w64 (24.2) unstable; urgency=medium
 
   * Fix gcov handling: we need to tell GCC that we have headers, without

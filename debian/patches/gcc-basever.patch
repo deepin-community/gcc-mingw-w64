@@ -1,0 +1,42 @@
+Description: Fix build issues due to gcc/BASE-VER modification
+Author: Konstantin Demin <rockdrilla@gmail.com>
+
+--- a/src/gcc/Makefile.in
++++ b/src/gcc/Makefile.in
+@@ -886,7 +886,7 @@ endif
+ version     := $(shell @get_gcc_base_ver@ $(BASEVER))
+ 
+ PATCHLEVEL_c := \
+-  $(shell echo $(BASEVER_c) | sed -e 's/^[0-9]*\.[0-9]*\.\([0-9]*\)$$/\1/')
++  $(shell echo $(deb_upstream_version) | sed -e 's/^[0-9]*\.[0-9]*\.\([0-9]*\)$$/\1/')
+ 
+ 
+ # For use in version.cc - double quoted strings, with appropriate
+@@ -2359,9 +2359,9 @@ CFLAGS-lto-streamer-in.o += -DTARGET_MAC
+ 
+ bversion.h: s-bversion; @true
+ s-bversion: BASE-VER
+-	echo "#define BUILDING_GCC_MAJOR `echo $(BASEVER_c) | sed -e 's/^\([0-9]*\).*$$/\1/'`" > bversion.h
+-	echo "#define BUILDING_GCC_MINOR `echo $(BASEVER_c) | sed -e 's/^[0-9]*\.\([0-9]*\).*$$/\1/'`" >> bversion.h
+-	echo "#define BUILDING_GCC_PATCHLEVEL `echo $(BASEVER_c) | sed -e 's/^[0-9]*\.[0-9]*\.\([0-9]*\)$$/\1/'`" >> bversion.h
++	echo "#define BUILDING_GCC_MAJOR `echo $(deb_upstream_version) | sed -e 's/^\([0-9]*\).*$$/\1/'`" > bversion.h
++	echo "#define BUILDING_GCC_MINOR `echo $(deb_upstream_version) | sed -e 's/^[0-9]*\.\([0-9]*\).*$$/\1/'`" >> bversion.h
++	echo "#define BUILDING_GCC_PATCHLEVEL `echo $(deb_upstream_version) | sed -e 's/^[0-9]*\.[0-9]*\.\([0-9]*\)$$/\1/'`" >> bversion.h
+ 	echo "#define BUILDING_GCC_VERSION (BUILDING_GCC_MAJOR * 1000 + BUILDING_GCC_MINOR)" >> bversion.h
+ 	$(STAMP) s-bversion
+ 
+--- a/src/gcc/configure.ac
++++ b/src/gcc/configure.ac
+@@ -2168,9 +2168,9 @@ fi
+ cat > plugin-version.h <<EOF
+ #include "configargs.h"
+ 
+-#define GCCPLUGIN_VERSION_MAJOR   `echo $gcc_BASEVER | sed -e 's/^\([0-9]*\).*$/\1/'`
+-#define GCCPLUGIN_VERSION_MINOR   `echo $gcc_BASEVER | sed -e 's/^[0-9]*\.\([0-9]*\).*$/\1/'`
+-#define GCCPLUGIN_VERSION_PATCHLEVEL   `echo $gcc_BASEVER | sed -e 's/^[0-9]*\.[0-9]*\.\([0-9]*\)$/\1/'`
++#define GCCPLUGIN_VERSION_MAJOR   `echo $deb_upstream_version | sed -e 's/^\([0-9]*\).*$/\1/'`
++#define GCCPLUGIN_VERSION_MINOR   `echo $deb_upstream_version | sed -e 's/^[0-9]*\.\([0-9]*\).*$/\1/'`
++#define GCCPLUGIN_VERSION_PATCHLEVEL   `echo $deb_upstream_version | sed -e 's/^[0-9]*\.[0-9]*\.\([0-9]*\)$/\1/'`
+ #define GCCPLUGIN_VERSION  (GCCPLUGIN_VERSION_MAJOR*1000 + GCCPLUGIN_VERSION_MINOR)
+ 
+ static char basever[] = "$gcc_BASEVER";

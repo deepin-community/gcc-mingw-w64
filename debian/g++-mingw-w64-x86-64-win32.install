@@ -3,6 +3,8 @@ usr/bin/x86_64-w64-mingw32-g++-win32
 usr/lib/gcc/x86_64-w64-mingw32/*-win32/cc1plus
 usr/lib/gcc/x86_64-w64-mingw32/*-win32/g++-mapper-server
 usr/lib/gcc/x86_64-w64-mingw32/*-win32/include/c++/*
-usr/lib/gcc/x86_64-w64-mingw32/*-win32/libstdc++*.a
+usr/lib/gcc/x86_64-w64-mingw32/*-win32/libstdc++.a
+usr/lib/gcc/x86_64-w64-mingw32/*-win32/libstdc++.dll.a
 usr/lib/gcc/x86_64-w64-mingw32/*-win32/libstdc++.dll.a-gdb.py
+usr/lib/gcc/x86_64-w64-mingw32/*-win32/libstdc++fs.a
 usr/lib/gcc/x86_64-w64-mingw32/*-win32/libsupc++.a

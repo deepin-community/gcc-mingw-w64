@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-# Build gcc-mingw-w64 using gcc-13-source.
+# Build gcc-mingw-w64 using gcc-12-source.
 # Copyright © 2010-2023 Stephen Kitt <skitt@debian.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 # Built-Using, which results in build failures
 export NO_PKG_MANGLE=1
 
-target_version := 13
+target_version := 12
 target32 := i686-w64-mingw32
 target64 := x86_64-w64-mingw32
 targets := $(target32) $(target64)
@@ -162,6 +162,8 @@ $(unpack_stamp):
 	tar xf $(gcc_dir)/gcc-*.tar.*
 	rm -rf $(upstream_dir)
 	mv gcc-* $(upstream_dir)
+# gcc-9-source assumes gm2 is unpacked too
+	tar xf $(gcc_dir)/gm2-*.tar.* --strip-components 1 -C $(upstream_dir)
 # Apply our first series of patches (those which need to be applied
 # before gcc-?-source’s)
 	QUILT_SERIES=debian/patches/series1 QUILT_PATCHES=debian/patches quilt push -a
@@ -244,14 +246,19 @@ spelling = grep -rl "$(1)" $(upstream_dir) | xargs -r sed -i "s/$(1)/$(2)/g"
 # unpacked and patched using the gcc-?-source package's patches
 mingw-w64-patch: mingw-w64-patch-stamp
 mingw-w64-patch-stamp: $(patch_stamp)
+# Remove the patch building libstdc++_pic.a before configuring
+	patch -R -p2 -d$(upstream_dir) < $(gcc_dir)/debian/patches/libstdc++-pic.diff
 # Apply our second series of patches
 	rm -rf .pc
 	QUILT_SERIES=debian/patches/series2 QUILT_PATCHES=debian/patches quilt push -a
 # Spelling fixes
 	$(call spelling,Allow to,Allow one to)
 	sed -i "s/Var befor:/Var before:/g" src/gcc/tree-ssa-loop-ivopts.cc
+	$(call spelling,classess,classes)
 	$(call spelling,eroneous,erroneous)
 	$(call spelling,identifer,identifier)
+# This breaks the build because of a long line in Ada code
+#	$(call spelling,incosistent,inconsistent)
 	$(call spelling,informations,information)
 	$(call spelling,interchage,interchange)
 	$(call spelling,intial,initial)
@@ -260,6 +267,7 @@ mingw-w64-patch-stamp: $(patch_stamp)
 	$(call spelling,mutiple,multiple)
 	$(call spelling,occurence,occurrence)
 	$(call spelling,refrence,reference)
+	$(call spelling,Regsitered,Registered)
 	$(call spelling,should't,shouldn't)
 	$(call spelling,splitted,split)
 	$(call spelling,Staticly,Statically)

@@ -6,9 +6,9 @@ Based on a patch originally by Claude Heiland-Allen <claude@mathr.co.uk>
 
 Index: gcc-mingw-w64/src/gcc/config/i386/sse.md
 ===================================================================
---- gcc-mingw-w64.orig/src/gcc/config/i386/sse.md	2023-09-22 17:31:36.374270043 +0200
-+++ gcc-mingw-w64/src/gcc/config/i386/sse.md	2023-09-22 17:31:36.366269859 +0200
-@@ -1419,17 +1419,11 @@
+--- gcc-mingw-w64.orig/src/gcc/config/i386/sse.md	2022-09-22 16:40:40.909921592 +0200
++++ gcc-mingw-w64/src/gcc/config/i386/sse.md	2022-09-22 16:40:40.905921486 +0200
+@@ -1363,17 +1363,11 @@
  {
    if (FLOAT_MODE_P (GET_MODE_INNER (<MODE>mode)))
      {
@@ -28,7 +28,7 @@ Index: gcc-mingw-w64/src/gcc/config/i386/sse.md
      }
  }
    [(set_attr "type" "ssemov")
-@@ -1620,17 +1614,11 @@
+@@ -1564,17 +1558,11 @@
  {
    if (FLOAT_MODE_P (GET_MODE_INNER (<MODE>mode)))
      {
@@ -48,7 +48,7 @@ Index: gcc-mingw-w64/src/gcc/config/i386/sse.md
      }
  }
    [(set_attr "type" "ssemov")
-@@ -10448,7 +10436,7 @@
+@@ -10312,7 +10300,7 @@
    "TARGET_SSE && !(MEM_P (operands[0]) && MEM_P (operands[1]))"
    "@
     %vmovlps\t{%1, %0|%q0, %1}
@@ -57,7 +57,7 @@ Index: gcc-mingw-w64/src/gcc/config/i386/sse.md
     %vmovlps\t{%1, %d0|%d0, %q1}"
    [(set_attr "type" "ssemov")
     (set_attr "prefix" "maybe_vex")
-@@ -18256,29 +18244,15 @@
+@@ -17966,29 +17954,15 @@
    switch (<MODE>mode)
      {
      case E_V8DFmode:
@@ -91,7 +91,7 @@ Index: gcc-mingw-w64/src/gcc/config/i386/sse.md
      default:
        gcc_unreachable ();
      }
-@@ -26800,63 +26774,27 @@
+@@ -26194,63 +26168,27 @@
        switch (get_attr_mode (insn))
  	{
  	case MODE_V16SF:
@@ -171,12 +171,12 @@ Index: gcc-mingw-w64/src/gcc/config/i386/sse.md
  	}
 Index: gcc-mingw-w64/src/gcc/config/i386/i386.cc
 ===================================================================
---- gcc-mingw-w64.orig/src/gcc/config/i386/i386.cc	2023-09-22 17:31:36.374270043 +0200
-+++ gcc-mingw-w64/src/gcc/config/i386/i386.cc	2023-09-22 17:33:09.600426632 +0200
-@@ -5475,17 +5475,15 @@
+--- gcc-mingw-w64.orig/src/gcc/config/i386/i386.cc	2022-09-22 16:40:40.909921592 +0200
++++ gcc-mingw-w64/src/gcc/config/i386/i386.cc	2022-09-22 16:42:36.428927213 +0200
+@@ -5418,17 +5418,15 @@
  	{
  	case opcode_int:
- 	  if (scalar_mode == E_HFmode || scalar_mode == E_BFmode)
+ 	  if (scalar_mode == E_HFmode)
 -	    opcode = (misaligned_p
 -		      ? (TARGET_AVX512BW ? "vmovdqu16" : "vmovdqu64")
 -		      : "vmovdqa64");
@@ -195,9 +195,9 @@ Index: gcc-mingw-w64/src/gcc/config/i386/i386.cc
  	  break;
  	}
      }
-@@ -5496,29 +5494,25 @@
+@@ -5438,29 +5436,25 @@
+ 	{
  	case E_HFmode:
- 	case E_BFmode:
  	  if (evex_reg_p)
 -	    opcode = (misaligned_p
 -		      ? (TARGET_AVX512BW
@@ -233,7 +233,7 @@ Index: gcc-mingw-w64/src/gcc/config/i386/i386.cc
  	  break;
  	default:
  	  gcc_unreachable ();
-@@ -5530,48 +5524,32 @@
+@@ -5472,48 +5466,32 @@
  	{
  	case E_QImode:
  	  if (evex_reg_p)
